@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
 
 {% load static %}
 
+<html lang="en">
 <head>
 	{% block meta %}
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -17,12 +17,15 @@
 	{% block corecss %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
             integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
 	{% endblock %}
 
     {% block extra_css %}
     {% endblock %}
 
 	{% block corejs %}
+        <script src="https://kit.fontawesome.com/5d6ba07855.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
         </script>
@@ -42,12 +45,15 @@
 
 <body>
     <header class="container-fluid fixed-top">
-        <div class="row">
+        <!-- Topnav -->
+        <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
+            <!-- Logo -->
             <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
                 <a href="{% url 'home' %}" class="nav-link main-logo-link">
-                    <h2 class="logo-font text-black my-0"><strong>Boutique</strong>Ado</h2>
+                    <h2 class="logo-font text-black my-0"><strong>Boutique</strong> Ado</h2>
                 </a>
             </div>
+            <!-- Search bar -->
             <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
                 <form method="GET" action="">
                     <div class="input-group w-100">
@@ -62,8 +68,10 @@
                     </div>
                 </form>
             </div>
+
             <div class="col-12 col-lg-4 my-auto py-1 py-lg-0">
                 <ul class="list-inline list-unstyled text-center text-lg-right my-0">
+                    <!-- My account -->
                     <li class="list-inline-item dropdown">
                         <a class="text-black nav-link" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="text-center">
@@ -84,6 +92,7 @@
                             {% endif %}
                         </div>
                     </li>
+                    <!-- Shopping bag -->
                     <li class="list-inline-item">
                         <a class="{% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link" href="">
                             <div class="text-center">
@@ -100,6 +109,22 @@
                     </li>
                 </ul>
             </div>
+        </div>
+        <!-- Navigation menu -->
+        <div class="row bg-white">
+            <nav class="navbar navbar-expand-lg navbar-light w-100">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                {% include 'includes/mobile-top-header.html' %}
+                {% include 'includes/main-nav.html' %}
+            </nav>
+        </div>
+        <!-- Banner -->
+        <div id="delivery-banner" class="row text-center">
+            <div class="col bg-black text-white">
+                <h4 class="logo-font my-1">Free delivery on orders over ${{ free_shipping_threshold }}!</h4>                
+            </div>            
         </div>
     </header>
 
