@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse, HttpResponse
 
 
 # --------------------------------------------------------- View Bag contents
@@ -34,3 +34,54 @@ def add_to_bag(request, item_id):
 
     request.session['bag'] = bag        # Overwrites variable in session with updated version
     return redirect(redirect_url)
+
+
+# --------------------------------------------------------- Adjust bag
+def adjust_bag(request, item_id):
+    """ Adjusts the quantity of specified product to specified amount """
+
+    quantity = int(request.POST.get('quantity'))    # Needs conversion to int as comes as string from from
+    size = None
+    if 'product_size' in request.POST:
+        size = request.POST['product_size']
+    bag = request.session.get('bag', {})    # Keeps bag contents while session lasts. If not session, it creates one
+
+    if size:                                            # If product has sizes...
+        if quantity > 0:                                        # ... and if quantity is greater than 0...
+            bag[item_id]['items_by_size'][size] = quantity      # ... sets quantity accordingly...
+        else:                                                   # ... otherwise...
+            del bag[item_id]['items_by_size'][size]             # ... removes the item of that size
+            if not bag[item_id]['items_by_size']:               # If there is no ohter sizes of the same item in bag...
+                bag.pop(item_id)                                # ... removes item completely
+    else:                                               # If product does not have sizes...
+        if quantity > 0:                                        # ... and if quantity is greater than 0...
+            bag[item_id] = quantity                             # ... sets quantity accordingly...
+        else:                                                   # ... otherwise...
+            bag.pop(item_id)                                    # ... removes the item completely
+
+    request.session['bag'] = bag
+    return redirect(reverse('view_bag'))
+
+
+# --------------------------------------------------------- Remove contents from bag
+def remove_from_bag(request, item_id):
+    """ Removes item from bag """
+
+    try:
+        size = None
+        if 'product_size' in request.POST:
+            size = request.POST['product_size']
+        bag = request.session.get('bag', {})    # Keeps bag contents while session lasts. If not session, it creates one
+
+        if size:                                        # If product has sizes...
+            del bag[item_id]['items_by_size'][size]         # ... removes the item of that size
+            if not bag[item_id]['items_by_size']:           # If there is no ohter sizes of the same item in bag...
+                bag.pop(item_id)                            # ... removes item completely
+        else:                                           # If product does not have sizes...
+            bag.pop(item_id)                                # ... removes the item completely
+
+        request.session['bag'] = bag
+        return HttpResponse(status=200)
+
+    except Exception as e:
+        return HttpResponse(status=500)
