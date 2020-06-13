@@ -35,10 +35,10 @@ def bag_contents(request):
                     'size': size,
             })
 
-    if total < settings.FREE_DELIVERY_TRESHOLD:     # If total price is lower than the free delivery treshold
-        delivery = total * Decimal(settings.STANDARD_DELIVERY_PERCENTAGE/100)   # Calculates delivery amount
-        free_delivery_delta = settings.FREE_DELIVERY_TRESHOLD - total   # Shows extra amount neccesary for free delivery
-    else:   # If total price is larger than free delivery treshold
+    if total < settings.FREE_DELIVERY_THRESHOLD:     # If total price is lower than the free delivery threshold
+        delivery = total * Decimal(settings.STANDARD_DELIVERY_PERCENTAGE / 100)   # Calculates delivery amount
+        free_delivery_delta = settings.FREE_DELIVERY_THRESHOLD - total   # Shows extra amount neccesary for free delivery
+    else:   # If total price is larger than free delivery threshold
         delivery = 0
         free_delivery_delta = 0
 
@@ -50,7 +50,7 @@ def bag_contents(request):
         'product_count': product_count,
         'delivery': delivery,
         'free_delivery_delta': free_delivery_delta,
-        'free_delivery_treshold': settings.FREE_DELIVERY_TRESHOLD,
+        'free_delivery_threshold': settings.FREE_DELIVERY_THRESHOLD,
         'grand_total': grand_total,
     }
 

@@ -37,8 +37,8 @@ class Order(models.Model):
         Updates grand total each time a line item is added,
         accounting for delivery costs.
         """
-        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum']
-        if self.order_total < settings.FREE_DELIVERY_TRESHOLD:  # If order total doesn't reach free delivery treshold...
+        self.order_total = self.lineitems.aggregate(Sum('lineitem_total'))['lineitem_total__sum'] or 0
+        if self.order_total < settings.FREE_DELIVERY_THRESHOLD:  # If order total doesn't reach free delivery treshold...
             self.delivery_cost = self.order_total * settings.STANDARD_DELIVERY_PERCENTAGE /100 # ... calculate delivery cost
         else:                                                   # If it is above free delivery treshold...     
             self.delivery_cost = 0                              # ... set delivery cost to 0
