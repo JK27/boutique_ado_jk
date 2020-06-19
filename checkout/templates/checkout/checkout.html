@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 {% extends "base.html" %}
-=======
-{% extends 'base.html' %}
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 {% load static %}
 {% load bag_tools %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
 {% endblock %}
-<<<<<<< HEAD
 <!-- Page header -->
-=======
-
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 {% block page_header %}
     <div class="container header-container">
         <div class="row">
@@ -28,7 +20,6 @@
         <div class="row">
             <div class="col">
                 <hr>
-<<<<<<< HEAD
                 <h2 class="logo-font mb-4">Checkout</h2>
                 <hr>
             </div>
@@ -37,15 +28,6 @@
         <div class="row">
             <!-- Order Summary -->
             <div class="col-12 col-lg-6 order-lg-last mb-5">
-=======
-                    <h2 class="logo-font mb-4">Checkout</h2>
-                <hr>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg-6 order-lg-last mb-5">
-                <!-- Order summary -->
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
                 <p class="text-muted">Order Summary ({{ product_count }})</p>
                 <div class="row">
                     <div class="col-7 offset-2">
@@ -57,14 +39,9 @@
                 </div>
                 {% for item in bag_items %}
                     <div class="row">
-<<<<<<< HEAD
                         <!-- Item details -->
                         <div class="col-2 mb-1">
                             <!-- Item image -->
-=======
-                        <!-- Item image -->
-                        <div class="col-2 mb-1">
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
                             <a href="{% url 'product_detail' item.product.id %}">
                                 {% if item.product.image %}
                                     <img class="w-100" src="{{ item.product.image.url }}" alt="{{ product.name }}">
@@ -79,21 +56,13 @@
                             <p class="my-0 small">Size: {% if item.product.has_sizes %}{{ item.size|upper }}{% else %}N/A{% endif %}</p>
                             <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
                         </div>
-<<<<<<< HEAD
-=======
-                        <!-- Subtotal -->
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
                         <div class="col-3 text-right">
                             <p class="my-0 small text-muted">${{ item.product.price | calc_subtotal:item.quantity }}</p>
                         </div>
                     </div>
                 {% endfor %}
                 <hr class="my-0">
-<<<<<<< HEAD
                 <!-- Order totals -->
-=======
-                <!-- Totals and delivery cost summary -->
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
                 <div class="row text-black text-right">
                     <div class="col-7 offset-2">
                         <p class="my-0">Order Total:</p>
@@ -107,7 +76,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
             <!-- Checkout form -->
             <div class="col-12 col-lg-6">
                 <p class="text-muted">Please fill out the form below to complete your order</p>
@@ -137,37 +105,6 @@
                                 <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
 							{% else %}
                                 <!-- Log in / sign up links -->
-=======
-
-            <div class="col-12 col-lg-6">
-                <p class="text-muted">Please fill out the form below to complete your order.</p>
-                <!-- Checkout form -->
-                <form action="{% url 'checkout' %}" method="POST" id="payment_form">
-                    {% csrf_token %}
-                    <!-- Details fieldset -->
-                    <fieldset class="rounded px-3 mb-5">
-                        <legend class="fieldset-label small text-black px-2 w-auto">Details</legend>
-                        {{ order_form.full_name | as_crispy_field}} 
-                        {{ order_form.email | as_crispy_field}}
-                    </fieldset>
-                    <!-- Delivery fieldset -->
-                    <fieldset class="rounded px-3 mb-5">
-                        <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
-                        {{ order_form.phone_number | as_crispy_field}}
-                        {{ order_form.country | as_crispy_field}}
-                        {{ order_form.postcode | as_crispy_field}}
-                        {{ order_form.town_or_city | as_crispy_field}}
-                        {{ order_form.street_address1 | as_crispy_field}}
-                        {{ order_form.street_address2 | as_crispy_field}}
-                        {{ order_form.county | as_crispy_field}}
-                        <div class="form-check form-check-inline float-right mr-0">
-                            <!-- Save delivery information option -->
-							{% if user.is_authenticated %}
-								<label class="form-check-label" for="id-save-info">Save this delivery information to my profile</label>
-                                <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info" checked>
-                            <!-- Sign up or log in links -->
-							{% else %}
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 								<label class="form-check-label" for="id-save-info">
                                     <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
                                     <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
@@ -178,24 +115,16 @@
                     <!-- Payment fieldset -->
                     <fieldset class="px-3">
                         <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
-<<<<<<< HEAD
                         <!-- A Stripe card element will go here -->
                         <div class="mb-3" id="card-element"></div>
 
                         <!-- Used to display form errors -->
                         <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                        <!-- Pass client secret to view so can get payment intent id -->
+                        <input type="hidden" value="{{ client.secret }}" name="client_secret">
                     </fieldset>
                     <div class="submit-button text-right mt-5 mb-2">
                         <!--Adjust bag link  -->
-=======
-                        <!-- Stripe card element -->
-                        <div class="mb-3" id="card-element"></div>
-                        <!-- Card errors -->
-                        <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
-                    </fieldset>
-                    <div class="submit-button text-right mt-5 mb-2">
-                        <!-- Link to shopping bag -->
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 						<a href="{% url 'view_bag' %}" class="btn btn-outline-black rounded-0">
 							<span class="icon">
 								<i class="fas fa-chevron-left"></i>
@@ -209,11 +138,7 @@
 								<i class="fas fa-lock"></i>
 							</span>
 						</button>
-<<<<<<< HEAD
                         <!-- Carde charge notification -->
-=======
-                        <!-- Charge notification -->
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 						<p class="small text-danger my-0">
 							<span class="icon">
 								<i class="fas fa-exclamation-circle"></i>
@@ -225,7 +150,6 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
     <!-- LOADING SPINNER -->
     <div id="loading-overlay">
         <h1 class="text-light logo-font loading-spinner">
@@ -234,8 +158,6 @@
             </span>
         </h1>
     </div>
-=======
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 {% endblock %}
 
 {% block postloadjs %}

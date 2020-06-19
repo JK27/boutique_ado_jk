@@ -82,13 +82,8 @@ TEMPLATES = [
                 'bag.contexts.bag_contents',    # Allows access to bag contents from any template
             ],
             'builtins': [
-<<<<<<< HEAD
                 'crispy_forms.templatetags.crispy_forms_tags',   # Give access to everything needed from...
                 'crispy_forms.templatetags.crispy_forms_field',  # ... crispy_forms accross all templates by default
-=======
-                'crispy_forms.templatetags.crispy_forms_tags',   # Gets all tags from crispy forms templates
-                'crispy_forms.templatetags.crispy_forms_field',  # Gets all fields from crispy forms templates
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
             ]
         },
     },
@@ -178,3 +173,4 @@ STANDARD_DELIVERY_PERCENTAGE = 10
 STRIPE_CURRENCY = 'usd'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')

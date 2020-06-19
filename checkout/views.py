@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponse
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
 
@@ -8,19 +9,31 @@ from products.models import Product
 from bag.contexts import bag_contents
 
 import stripe
+import json
 
 
-<<<<<<< HEAD
-# --------------------------------------------------------- Checkout
+# --------------------------------------------------------- CACHE CHECKOUT DATA
+@require_POST
+def cache_checkout_data(request):
+    try:
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.modify(pid, metadata={
+            'bag': json.dumps(request.session.get('bag', {})),
+            'save_info': request.POST.get('save_info'),
+            'username': request.user,
+        })
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, 'Sorry, your payment cannot be \
+            processed right now. Please try again later.')
+        return HttpResponse(content=e, status=400)
+
+
+# --------------------------------------------------------- CHECKOUT
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
-=======
-# --------------------------------------------------------- Checkout view
-def checkout(request):
-    stripe_public_key = 'pk_test_oiWla7xaHMF0nqAqwJQIhxGj00HLHEGeLA'    # Needs to be hidden
-    stripe_secret_key = 'sk_test_g5KYB8OXEGvrHQT710wzwfWM000ymAzxlu'    # Needs to be hidden
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 
     if request.method == 'POST':
         bag = request.session.get('bag', {})
@@ -37,9 +50,12 @@ def checkout(request):
             'county': request.POST['county'],
         }
         order_form = OrderForm(form_data)
-<<<<<<< HEAD
         if order_form.is_valid():
-            order = order_form.save()
+            order = order_form.save(commit=False)    # Commit=False prevents multiple save events
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            order.original_bag = json.dumps(bag)
+            order.save()
             for item_id, item_data in bag.items():
                 try:
                     product = Product.objects.get(id=item_id)
@@ -53,30 +69,12 @@ def checkout(request):
                     else:                                       # If item has sizes...
                         for size, quantity in item_data['items_by_size'].items():   # ... for each item by size ...
                             order_line_item = OrderLineItem(    # ... create a line item
-=======
-        if order_form.is_valid():                           # If form is valid... 
-            order = order_form.save()
-            for item_id, item_data in bag.items():
-                try:
-                    product = Product.objects.get(id=item_id)   # ... gets item id from bag...
-                    if isinstance(item_data, int):              # ... if item doesn't have sizes...
-                        order_line_item = OrderLineItem(        # ... creates line item
-                            order=order,
-                            product=product,
-                            quantity=item_data,
-                        )
-                        order_line_item.save()
-                    else:                                       # ... if item has sizes...
-                        for size, quantity in item_data['items_by_size'].items():   # ... for each item by size...
-                            order_line_item = OrderLineItem(    # ... creates line item for each size
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
                                 order=order,
                                 product=product,
                                 quantity=quantity,
                                 product_size=size,
                             )
                             order_line_item.save()
-<<<<<<< HEAD
                 except Product.DoesNotExist:            # In unlikely event that product doesn't exist...
                     messages.error(request, (           # ... show error message
                         "One of the products in your bag wasn't found in our database. "
@@ -96,28 +94,6 @@ def checkout(request):
         if not bag:
             messages.error(request, "There's nothing in your bag at the moment")
             return redirect(reverse('products'))
-=======
-                except Product.DoesNotExist:                # In the unlikely event that product is not found...
-                    messages.error(request, (               # ... adds error message...
-                        "One of the products in your bag wasn't found in our database. "
-                        "Please call us for assistance!")
-                    )
-                    order.delete()                          # ... deletes the empty order...
-                    return redirect(reverse('view_bag'))    # ... and returns user to shopping bag page
-
-            request.session['save_info'] = 'save-info' in request.POST
-            return redirect(reverse('checkout_success', args=[order.order_number]))
-        else:                                                               # If form is not valid ...
-            messages.error(request, 'There was an error with your form. \
-                Please double check your information.')                     # ... adds error message
-
-    else:
-        bag = request.session.get('bag', {})            # Gets bag from session
-        if not bag:                                     # If bag is empty...
-            messages.error(request,                     # ... gives error message...
-                        "There is nothing in your bag at the moment")
-            return redirect(reverse('products'))        # ... and redirects to products page
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 
         current_bag = bag_contents(request)
         total = current_bag['grand_total']
@@ -144,14 +120,10 @@ def checkout(request):
     return render(request, template, context)
 
 
-# --------------------------------------------------------- Checkout success
+# --------------------------------------------------------- CHECKOUT SUCCESS
 def checkout_success(request, order_number):
     """
-<<<<<<< HEAD
     Handle successful checkouts
-=======
-    Handle successful checkout
->>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
     """
     save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
