@@ -21,5 +21,4 @@
     "--ignore=E402,F841,F401,E302,E305,E501",
 ],
 "emmet.extensionsPath": ".theia",
-"editor.suggest.filteredTypes": {},
 }

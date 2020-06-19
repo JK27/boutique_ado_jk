@@ -5,9 +5,15 @@
     https://stripe.com/docs/stripe-js
 */
 
+<<<<<<< HEAD
 var stripePublicKey  = $('#id_stripe_public_key').text().slice(1, -1);
 var clientSecret  = $('#id_client_secret').text().slice(1, -1);
 var stripe = Stripe(stripePublicKey );
+=======
+var stripePublicKey = $('#id_stripe_public_key').text().slice(1, -1);
+var clientSecret = $('#id_client_secret').text().slice(1, -1);
+var stripe = Stripe(stripePublicKey);
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 var elements = stripe.elements();
 var style = {
     base: {
@@ -50,8 +56,11 @@ form.addEventListener('submit', function(ev) {
     ev.preventDefault();
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
+<<<<<<< HEAD
     $('#payment-form').fadeToggle(100);
     $('#loading-overlay').fadeToggle(100);
+=======
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
             card: card,
@@ -65,8 +74,11 @@ form.addEventListener('submit', function(ev) {
                 </span>
                 <span>${result.error.message}</span>`;
             $(errorDiv).html(html);
+<<<<<<< HEAD
             $('#payment-form').fadeToggle(100);
             $('#loading-overlay').fadeToggle(100);
+=======
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
             card.update({ 'disabled': false});
             $('#submit-button').attr('disabled', false);
         } else {
@@ -75,4 +87,8 @@ form.addEventListener('submit', function(ev) {
             }
         }
     });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70

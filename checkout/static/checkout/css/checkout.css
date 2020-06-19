@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* ------------------------------------ STRIPE ELEMENT */
+=======
+/* ------------------------------------ Stripe */
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 .StripeElement,
 .stripe-style-input {
   box-sizing: border-box;
@@ -22,11 +26,18 @@
   background-color: #fefde5 !important;
 }
 
+<<<<<<< HEAD
 /* ------------------------------------ CHECKOUT FORM */
+=======
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 .stripe-style-input::placeholder {
     color: #aab7c4;
 }
 
+<<<<<<< HEAD
+=======
+/* ------------------------------------ Payment form */
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
 .fieldset-label {
     position: relative;
     right: .5rem;
@@ -34,6 +45,7 @@
 
 #payment-form .form-control,
 #card-element {
+<<<<<<< HEAD
     color: #000;
     border: 1px solid #000;
 }
@@ -57,3 +69,8 @@
     margin: 0;
     height: 100%;
 }
+=======
+    color: #000000;
+    border: 1px solid #000000;
+}
+>>>>>>> ee7f4c3470de66cdc4030780d4e1b9601afd9a70
