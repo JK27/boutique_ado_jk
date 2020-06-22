@@ -8,7 +8,6 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         exclude = ('user',)
 
-    # --- Custom __init__ method
     def __init__(self, *args, **kwargs):
         """
         Add placeholders and classes, remove auto-generated
